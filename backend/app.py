@@ -43,3 +43,17 @@ def get_hero(hero_id):
         response = make_response(jsonify({'error': 'Hero not found'}), 404)
 
     return response
+
+# Sample API route to get all powers
+@app.route('/powers', methods=['GET'])
+def get_powers():
+    print("Received GET request at /powers")
+    powers = Power.query.all()
+    powers_list = [{
+        'id': power.id,
+        'name': power.name,
+        'description': power.description
+    } for power in powers]
+
+    response = make_response(jsonify(powers_list), 200)
+    return response
