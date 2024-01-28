@@ -108,3 +108,24 @@ def get_hero_power(hero_power_id):
 
     return response
 
+# Sample API route to create a new hero power
+@app.route('/hero_powers', methods=['POST'])
+def create_hero_power():
+    data = request.json
+    new_hero_power = HeroPower(
+        hero_id=data['hero_id'],
+        power_id=data['power_id'],
+        strength=data['strength']
+    )
+    db.session.add(new_hero_power)
+    db.session.commit()
+
+    response_data = {
+        'hero_id': new_hero_power.hero_id,
+        'power_id': new_hero_power.power_id,
+        'strength': new_hero_power.strength
+    }
+
+    response = make_response(jsonify(response_data), 201)
+    return response
+
