@@ -57,3 +57,21 @@ def get_powers():
 
     response = make_response(jsonify(powers_list), 200)
     return response
+
+# Sample API route to get a specific power by ID
+@app.route('/powers/<int:power_id>', methods=['GET'])
+def get_power(power_id):
+    print(f"Received GET request at /powers/{power_id}")
+    power = Power.query.get(power_id)
+
+    if power is not None:
+        power_data = {
+            'id': power.id,
+            'name': power.name,
+            'description': power.description
+        }
+        response = make_response(jsonify(power_data), 200)
+    else:
+        response = make_response(jsonify({'error': 'Power not found'}), 404)
+
+    return response
