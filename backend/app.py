@@ -90,3 +90,21 @@ def get_hero_powers():
     response = make_response(jsonify(hero_powers_list), 200)
     return response
 
+# Sample API route to get a specific hero power by ID
+@app.route('/hero_powers/<int:hero_power_id>', methods=['GET'])
+def get_hero_power(hero_power_id):
+    print(f"Received GET request at /hero_powers/{hero_power_id}")
+    hero_power = HeroPower.query.get(hero_power_id)
+
+    if hero_power is not None:
+        hero_power_data = {
+            'hero_id': hero_power.hero_id,
+            'power_id': hero_power.power_id,
+            'strength': hero_power.strength
+        }
+        response = make_response(jsonify(hero_power_data), 200)
+    else:
+        response = make_response(jsonify({'error': 'Hero Power not found'}), 404)
+
+    return response
+
