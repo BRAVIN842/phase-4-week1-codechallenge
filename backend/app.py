@@ -153,4 +153,6 @@ def update_hero_power(hero_power_id):
 
     return response
 
+if __name__ == '__main__':
+    app.run(port=5555)
 
