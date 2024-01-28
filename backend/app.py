@@ -25,3 +25,21 @@ def get_heroes():
 
     response = make_response(jsonify(heroes_list), 200)
     return response
+
+# Sample API route to get a specific hero by ID
+@app.route('/heroes/<int:hero_id>', methods=['GET'])
+def get_hero(hero_id):
+    print(f"Received GET request at /heroes/{hero_id}")
+    hero = Hero.query.get(hero_id)
+
+    if hero is not None:
+        hero_data = {
+            'id': hero.id,
+            'name': hero.name,
+            'super_name': hero.super_name
+        }
+        response = make_response(jsonify(hero_data), 200)
+    else:
+        response = make_response(jsonify({'error': 'Hero not found'}), 404)
+
+    return response
