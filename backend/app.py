@@ -129,3 +129,28 @@ def create_hero_power():
     response = make_response(jsonify(response_data), 201)
     return response
 
+# Sample API route to update a hero power by ID
+@app.route('/hero_powers/<int:hero_power_id>', methods=['PATCH'])
+def update_hero_power(hero_power_id):
+    hero_power = HeroPower.query.get(hero_power_id)
+
+    if hero_power is not None:
+        data = request.json
+        hero_power.hero_id = data.get('hero_id', hero_power.hero_id)
+        hero_power.power_id = data.get('power_id', hero_power.power_id)
+        hero_power.strength = data.get('strength', hero_power.strength)
+        db.session.commit()
+
+        response_data = {
+            'hero_id': hero_power.hero_id,
+            'power_id': hero_power.power_id,
+            'strength': hero_power.strength
+        }
+
+        response = make_response(jsonify(response_data), 200)
+    else:
+        response = make_response(jsonify({'error': 'Hero Power not found'}), 404)
+
+    return response
+
+
